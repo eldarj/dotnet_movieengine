@@ -9,7 +9,7 @@ namespace movieEngine.Data.Models
     {
         public int ClientId { get; set; }
         public String Name { get; set; }
-        public int Username { get; set; }
+        public String Username { get; set; }
         public String Token { get; set; }
         public DateTime DateRegistered { get; set; }
     }
