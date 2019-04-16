@@ -4,15 +4,16 @@ using System;
 
 namespace movieEngine.Data
 {
-    public class MyContext : DbContext
+    public class MyDbContext : DbContext
     {
-        public MyContext(DbContextOptions<MyContext> options) : base(options) { }
+        public MyDbContext(DbContextOptions<MyDbContext> options) : base(options) { }
 
         #region DbSets
-        DbSet<Actor> Actors { get; set; }
-        DbSet<Title> Titles { get; set; }
-        DbSet<TitleType> TitleTypes { get; set; }
-        DbSet<Client> Clients { get; set; } // registered api clients
+        public DbSet<Actor> Actors { get; set; }
+        public DbSet<Title> Titles { get; set; }
+        public DbSet<TitleType> TitleTypes { get; set; }
+        public DbSet<TitleActor> TitlesActors { get; set; }
+        public DbSet<Client> Clients { get; set; } // registered api clients
         #endregion
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
