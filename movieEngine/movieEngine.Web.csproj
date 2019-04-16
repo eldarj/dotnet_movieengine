@@ -23,9 +23,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Areas\Apix\Controllers\" />
+    <Folder Include="Areas\Apix\Data\" />
+    <Folder Include="Areas\Apix\Models\" />
+    <Folder Include="Areas\Apix\Views\" />
     <Folder Include="Areas\Api\Models\" />
-    <Folder Include="Areas\Api\Helpers\" />
-    <Folder Include="Areas\Api\Filters\" />
   </ItemGroup>
 
   <ItemGroup>

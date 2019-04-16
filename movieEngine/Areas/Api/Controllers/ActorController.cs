@@ -4,22 +4,22 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using movieEngine.Data;
 using movieEngine.Web.Areas.Api.Helpers;
 
 namespace movieEngine.Web.Areas.Api.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
+    [Route("api/actors")]
     public class ActorController : MyBaseApiController
     {
-        public ActorController(MyContext ctx) : base(ctx) {}
+        public ActorController(MyDbContext ctx) : base(ctx) { }
 
-        // GET: api/Actor
+        // GET: api/actors
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IActionResult GetAll()
         {
-            return new string[] { "value1", "value2" };
+            return Ok(db.Actors.ToList());
         }
 
         // GET: api/Actor/5

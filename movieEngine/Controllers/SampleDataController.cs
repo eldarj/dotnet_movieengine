@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace movieEngine.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("apiold/[controller]")]
     public class SampleDataController : Controller
     {
         private static string[] Summaries = new[]

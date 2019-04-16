@@ -1,16 +1,17 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using movieEngine.Data;
 using movieEngine.Web.Areas.Api.Filters;
+using System.Web.Http;
 
 namespace movieEngine.Web.Areas.Api.Helpers
 {
-    [ApiAuthAttribute]
+    [ApiController]
     [Produces("application/json")]
-    public class MyBaseApiController
+    public class MyBaseApiController : Controller
     {
-        protected readonly MyContext db;
+        protected readonly MyDbContext db;
 
-        protected MyBaseApiController(MyContext ctx)
+        protected MyBaseApiController(MyDbContext ctx)
         {
             db = ctx;
         }
