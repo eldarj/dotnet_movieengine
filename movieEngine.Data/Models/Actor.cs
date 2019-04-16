@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Newtonsoft.Json;
 
 namespace movieEngine.Data.Models
 {
@@ -9,6 +10,12 @@ namespace movieEngine.Data.Models
         public int ActorId { get; set; }
         public string Firstname { get; set; }
         public string Lastname { get; set; }
-        public virtual ICollection<TitleActor> Titles { get; set; } // titles that this actor acted in
+
+        /**
+         * JsonIgnore - for the purpose of this test-project, just ignore some entity 
+         * model fields during serialization (otherwise the API should always map and return response/view models and not entities)
+         */
+        [JsonIgnore]
+        public virtual ICollection<TitleActor> Titles { get; set; }
     }
 }
