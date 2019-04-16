@@ -21,8 +21,8 @@ namespace movieEngine
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<MyContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("localdb")));
+            services.AddDbContext<MyDbContext>(options =>
+                options.UseInMemoryDatabase(databaseName: "myInmemoryDb"));
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
@@ -53,10 +53,7 @@ namespace movieEngine
 
             app.UseMvc(routes =>
             {
-                routes.MapRoute(
-                  name: "areas",
-                  template: "{area:exists}/{controller}/{action=Index}/{id?}"
-                );
+                //map route for areas
                 routes.MapRoute(
                     name: "default",
                     template: "{controller}/{action=Index}/{id?}");
