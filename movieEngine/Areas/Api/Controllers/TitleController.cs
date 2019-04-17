@@ -22,10 +22,10 @@ namespace movieEngine.Web.Areas.Api.Controllers
         [HttpGet]
         public IActionResult Get([FromQuery] string type)
         {
-            var titles = String.IsNullOrEmpty(type) ? 
+            var titles = String.IsNullOrEmpty(type) ?
                 db.Titles
                     .Include(t => t.Type)
-                    .ToList() : 
+                    .ToList() :
                 db.Titles
                     .Include(t => t.Type)
                     .Where(t => t.Type.Name == type)
@@ -111,5 +111,60 @@ namespace movieEngine.Web.Areas.Api.Controllers
 
             return NoContent();
         }
+
+
+        #region "Title's cast"
+        // GET: api/titles/5/actors
+        [HttpGet]
+        [Route("{id}/actors")]
+        public IActionResult GetTitleActors([FromRoute] int id)
+        {
+            var title = db.Titles
+                .Include(t => t.Actors)
+                .SingleOrDefault(t => t.TitleId == id);
+            if (title == null)
+            {
+                return NotFound();
+            }
+
+            var actors = db.Actors
+                    .Include(t => t.Titles)
+                    .Where(t => t.Titles.Intersect(title.Actors).Any())
+                    .ToList();
+
+            return Ok(mapper.Map<List<ActorResponse>>(actors));
+        }
+
+        // PUT: api/titles/5/actors
+        [HttpPut]
+        [Route("{id}/actors")]
+        public IActionResult UpdateActorTitles([FromRoute] int id, [FromBody] List<ActorResponse> actors)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            var title = db.Titles
+                .Include(t => t.Actors)
+                .SingleOrDefault(t => t.TitleId == id);
+            if (title == null)
+            {
+                return NotFound();
+            }
+
+            db.TitlesActors.RemoveRange(title.Actors);
+            title.Actors = actors.Select(a => new TitleActor
+            {
+                ActorId = a.Id,
+                TitleId = title.TitleId
+            })
+            .ToList();
+
+            db.SaveChanges();
+
+            return NoContent();
+        }
+        #endregion
     }
 }

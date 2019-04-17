@@ -2,11 +2,11 @@
 using Microsoft.AspNetCore.Mvc;
 using movieEngine.Data;
 using movieEngine.Web.Areas.Api.Filters;
-using System.Web.Http;
 
 namespace movieEngine.Web.Areas.Api.Helpers
 {
     [ApiController]
+    [ApiAuthAttribute]
     [Produces("application/json")]
     public class MyBaseApiController : Controller
     {

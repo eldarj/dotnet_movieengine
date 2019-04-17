@@ -94,7 +94,8 @@ namespace movieEngine.Web.Areas.Api.Controllers
 
 
         #region "Actor's titles endpoints"
-        // GET: api/actors/5/titles
+        // GET: api/actors/5/titles?type=movie
+        //  - With query param 'type' as: Optional, Caseinsensitive
         [HttpGet]
         [Route("{id}/titles")]
         public IActionResult GetActorTitles([FromRoute] int id, [FromQuery] string type)
