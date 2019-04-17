@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using movieEngine.Data;
+using movieEngine.Web.Areas.Api.Mappers;
 
 namespace movieEngine
 {
@@ -27,7 +28,11 @@ namespace movieEngine
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-            services.AddAutoMapper();
+            //services.AddAutoMapper();
+            services.AddScoped(provider => new MapperConfiguration(cfg => 
+            {
+                cfg.AddProfile(new MappingProfiles(provider.GetService<MyDbContext>()));
+            }).CreateMapper());
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>

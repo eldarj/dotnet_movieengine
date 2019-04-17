@@ -23,7 +23,7 @@ namespace movieEngine.Web.Areas.Api.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(mapper.Map<List<ActorRequest>>(db.Actors.ToList()));
+            return Ok(mapper.Map<List<ActorResponse>>(db.Actors.ToList()));
         }
 
         // GET: api/actors/5
@@ -34,7 +34,7 @@ namespace movieEngine.Web.Areas.Api.Controllers
             var actor = db.Actors.SingleOrDefault(a => a.ActorId == id);
             if (actor != null)
             {
-                return Ok(mapper.Map<ActorRequest>(actor));
+                return Ok(mapper.Map<ActorResponse>(actor));
             }
 
             return NotFound();
@@ -43,34 +43,57 @@ namespace movieEngine.Web.Areas.Api.Controllers
 
         // POST: api/actors
         [HttpPost]
-        public IActionResult Create([FromBody] ActorRequest obj)
+        public IActionResult Create([FromBody] ActorResponse obj)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest();
             }
 
-            var newActor = new Actor
-            {
-                Firstname = obj.Firstname,
-                Lastname = obj.Lastname,
-                
-            };
-
+            var newActor = mapper.Map<Actor>(obj);
             db.Actors.Add(newActor);
-            return Ok();
+            db.SaveChanges();
+
+            return CreatedAtAction(nameof(Get), new { id = newActor.ActorId }, mapper.Map<ActorResponse>(newActor));
         }
 
         // PUT: api/actors/5
         [HttpPut("{id}")]
-        public void Update([FromRoute] int id, [FromBody] string value)
+        public IActionResult Update([FromRoute] int id, [FromBody] ActorResponse obj)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            var actor = db.Actors.Find(id);
+            if (actor == null)
+            {
+                return NotFound();
+            }
+
+            actor.Firstname = obj.Firstname;
+            actor.Lastname = obj.Lastname;
+
+            db.SaveChanges();
+
+            return NoContent();
         }
 
         // DELETE: api/actors/5
         [HttpDelete("{id}")]
-        public void Delete([FromRoute] int id)
+        public IActionResult Delete([FromRoute] int id)
         {
+            var actor = db.Actors.Find(id);
+            if (actor == null)
+            {
+                return NotFound();
+            }
+
+            db.Actors.Remove(actor);
+            db.SaveChanges();
+
+            return NoContent();
         }
     }
 }
