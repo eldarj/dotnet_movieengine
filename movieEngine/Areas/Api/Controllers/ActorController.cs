@@ -7,43 +7,69 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using movieEngine.Data;
 using movieEngine.Web.Areas.Api.Helpers;
+using movieEngine.Web.Areas.Api.Filters;
+using movieEngine.Data.Models;
+using movieEngine.Web.Areas.Api.Models;
+using AutoMapper;
 
 namespace movieEngine.Web.Areas.Api.Controllers
 {
     [Route("api/actors")]
     public class ActorController : MyBaseApiController
     {
-        public ActorController(MyDbContext ctx) : base(ctx) { }
+        public ActorController(MyDbContext ctx, IMapper mapper) : base(ctx, mapper) { }
 
         // GET: api/actors
         [HttpGet]
-        public IActionResult GetAll()
+        public IActionResult Get()
         {
-            return Ok(db.Actors.ToList());
+            return Ok(mapper.Map<List<ActorRequest>>(db.Actors.ToList()));
         }
 
-        // GET: api/Actor/5
-        [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
+        // GET: api/actors/5
+        [HttpGet]
+        [Route("{id}")]
+        public IActionResult Get([FromRoute] int id)
         {
-            return "value";
+            var actor = db.Actors.SingleOrDefault(a => a.ActorId == id);
+            if (actor != null)
+            {
+                return Ok(mapper.Map<ActorRequest>(actor));
+            }
+
+            return NotFound();
         }
 
-        // POST: api/Actor
+
+        // POST: api/actors
         [HttpPost]
-        public void Post([FromBody] string value)
+        public IActionResult Create([FromBody] ActorRequest obj)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            var newActor = new Actor
+            {
+                Firstname = obj.Firstname,
+                Lastname = obj.Lastname,
+                
+            };
+
+            db.Actors.Add(newActor);
+            return Ok();
         }
 
-        // PUT: api/Actor/5
+        // PUT: api/actors/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public void Update([FromRoute] int id, [FromBody] string value)
         {
         }
 
-        // DELETE: api/ApiWithActions/5
+        // DELETE: api/actors/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public void Delete([FromRoute] int id)
         {
         }
     }

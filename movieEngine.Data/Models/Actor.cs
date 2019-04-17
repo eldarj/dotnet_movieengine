@@ -14,7 +14,7 @@ namespace movieEngine.Data.Models
          * JsonIgnore - for the purpose of this test-project, just ignore some entity 
          * model fields during serialization (otherwise the API should always map and return response/view models and not entities)
          */
-        [JsonIgnore]
+        //[JsonIgnore]
         public virtual ICollection<TitleActor> Titles { get; set; }
     }
 }

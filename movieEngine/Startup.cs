@@ -1,3 +1,4 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -25,6 +26,8 @@ namespace movieEngine
                 options.UseInMemoryDatabase(databaseName: "myInmemoryDb"));
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            services.AddAutoMapper();
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
