@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using movieEngine.Data;
 using movieEngine.Web.Areas.Api.Helpers;
-using movieEngine.Web.Areas.Api.Filters;
 using movieEngine.Data.Models;
 using movieEngine.Web.Areas.Api.Models;
 using AutoMapper;
@@ -39,7 +36,6 @@ namespace movieEngine.Web.Areas.Api.Controllers
 
             return NotFound();
         }
-
 
         // POST: api/actors
         [HttpPost]
@@ -95,5 +91,67 @@ namespace movieEngine.Web.Areas.Api.Controllers
 
             return NoContent();
         }
+
+
+        #region "Actor's titles endpoints"
+        // GET: api/actors/5/titles
+        [HttpGet]
+        [Route("{id}/titles")]
+        public IActionResult GetActorTitles([FromRoute] int id, [FromQuery] string type)
+        {
+            var actor = db.Actors
+                .Include(a => a.Titles)
+                .SingleOrDefault(a => a.ActorId == id);
+            if (actor == null)
+            {
+                return NotFound();
+            }
+
+            var titles = String.IsNullOrEmpty(type) ?
+                db.Titles
+                    .Include(t => t.Type)
+                    .Include(t => t.Actors)
+                    .Where(t => t.Actors.Intersect(actor.Titles).Any())
+                    .ToList() :
+                db.Titles
+                    .Include(t => t.Type)
+                    .Include(t => t.Actors)
+                    .Where(t => t.Type.Name == type && t.Actors.Intersect(actor.Titles).Any())
+                    .ToList();
+
+            return Ok(mapper.Map<List<TitleResponse>>(titles));
+        }
+
+        // PUT: api/actors/5/titles
+        [HttpPut]
+        [Route("{id}/titles")]
+        public IActionResult UpdateActorTitles([FromRoute] int id, [FromBody] List<TitleResponse> titles)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            var actor = db.Actors
+                .Include(a => a.Titles)
+                .SingleOrDefault(a => a.ActorId == id);
+            if (actor == null)
+            {
+                return NotFound();
+            }
+
+            db.TitlesActors.RemoveRange(actor.Titles);
+            actor.Titles = titles.Select(t => new TitleActor {
+                ActorId = actor.ActorId,
+                TitleId = t.Id
+            })
+            .ToList();
+
+            db.SaveChanges();
+
+            return NoContent();
+        }
+
+        #endregion
     }
 }

@@ -28,9 +28,9 @@ namespace movieEngine
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
+            //// Register AutoMapper
             //services.AddAutoMapper();
-            services.AddScoped(provider => new MapperConfiguration(cfg => 
-            {
+            services.AddScoped(provider => new MapperConfiguration(cfg => {
                 cfg.AddProfile(new MappingProfiles(provider.GetService<MyDbContext>()));
             }).CreateMapper());
 
