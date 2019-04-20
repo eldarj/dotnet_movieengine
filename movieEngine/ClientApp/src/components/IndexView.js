@@ -32,7 +32,7 @@ export class IndexView extends Component {
         .then(data => {
             this.titles = data;
             this.setState({
-                items: this.getByType(this.defaultFilterType),
+                items: this.getFilteredTitles(this.defaultFilterType),
                 subtitle: this.subtitleMap[this.defaultFilterType],
                 selectedTypeName: this.defaultFilterType,
                 loadingData: false
@@ -40,8 +40,12 @@ export class IndexView extends Component {
         });
     }
 
-    getByType(type) {
-        return this.titles.filter(itm => itm.type === type);
+    getFilteredTitles(type, query = '') {
+        if(query === '') return this.titles.filter(itm => itm.type === type);
+        return this.titles.filter(itm => {
+            let toFilter = itm.name;
+            return itm.type === type && toFilter.toLowerCase().includes(query.toLowerCase());
+        });
     }
 
     renderByType(typeName = this.defaultFilterType) {
@@ -49,10 +53,19 @@ export class IndexView extends Component {
             this.subtitleMap[typeName];
 
         this.setState({
-            items: this.getByType(typeName),
+            items: this.getFilteredTitles(typeName),
             subtitle: _sub,
             selectedTypeName: typeName,
         });
+    }
+
+    handleSearchOnChange(e) {
+        let query = e.target.value;
+        if (query.length === 0) this.setState({ items: this.getFilteredTitles(this.state.selectedTypeName) });
+
+        if (query.length < 2) return;
+
+        this.setState({ items: this.getFilteredTitles(this.state.selectedTypeName, query) });
     }
 
     static renderItemsTable(items) {
@@ -85,16 +98,29 @@ export class IndexView extends Component {
             <div className="titles-wrapper">
                 <h1>Movie Engine</h1>
                 <p>{this.state.subtitle}</p>
-                <ul className="nav nav-tabs">
-                {this.state.types.map(t =>
-                    <li className="nav-item" key={t.name}>
-                        <a className={"nav-link " + (t.name === this.state.selectedTypeName ? "active" : "")}
-                            onClick={() => this.renderByType(t.name)}>
-                            {t.name}
-                        </a>
-                    </li>
-                )}
-                </ul>
+                <div className="d-flex flex-row justify-content-between">
+                    <ul className="nav nav-tabs">
+                        {this.state.types.map(t =>
+                            <li className="nav-item d-flex align-items-end" key={t.name}>
+                                <a className={"nav-link " + (t.name === this.state.selectedTypeName ? "active" : "")}
+                                    onClick={() => this.renderByType(t.name)}>
+                                    {t.name}
+                                </a>
+                            </li>
+                        )}
+                    </ul>
+                    <div className="search-filter mb-2">
+                        <small>-- * Use specific search phrases like "5 stars", "at least 3 stars", "after 2015", "older than 5 years"</small>
+                        <div className="input-group input-group-sm">
+                            <div className="input-group-prepend">
+                                <span className="input-group-text" id="basic-addon1">Search</span>
+                            </div>
+                            <input type="text" className="form-control"
+                                onChange={(e) => this.handleSearchOnChange(e)}
+                                placeholder="Search by title, desc., release date, rating..." />
+                        </div>
+                    </div>
+                </div>
                 <div>{contents}</div>
             </div>
         );
