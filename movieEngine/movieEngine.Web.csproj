@@ -24,13 +24,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\Apix\Controllers\" />
-    <Folder Include="Areas\Apix\Data\" />
-    <Folder Include="Areas\Apix\Models\" />
-    <Folder Include="Areas\Apix\Views\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\movieEngine.Data\movieEngine.Data.csproj" />
   </ItemGroup>
 
