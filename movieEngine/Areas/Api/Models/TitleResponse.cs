@@ -13,6 +13,7 @@ namespace movieEngine.Web.Areas.Api.Models
 
         public string ImagePath { get; set; }
         public string ImageBase64 { get; set; }
+        public string FileName { get; set; }
 
         public string Released { get; set; }
         public double Rating { get; set; }
@@ -23,5 +24,6 @@ namespace movieEngine.Web.Areas.Api.Models
 
         // avoid serializing the base64 string, but still accept it for deserialization in requests
         public bool ShouldSerializeImageBase64() => false;
+        public bool ShouldSerializeFileName() => false;
     }
 }
