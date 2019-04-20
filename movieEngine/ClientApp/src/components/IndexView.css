@@ -1,0 +1,12 @@
+﻿/******************************/
+/*****   IndexView CSS   ******/
+/******************************/
+
+
+.titles-wrapper .nav .nav-link {
+    cursor: pointer;
+}
+.titles-wrapper .nav .nav-link.active {
+    background-color: blue;
+    color: #fff;
+}

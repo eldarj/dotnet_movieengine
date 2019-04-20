@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import './IndexView.css';
 
 export class IndexView extends Component {
     static displayName = IndexView.name;
@@ -81,13 +82,16 @@ export class IndexView extends Component {
         let contents = this.state.loadingData ? <p>Loading...</p> : IndexView.renderItemsTable(this.state.items);
         
         return (
-            <div className="titles-comp">
+            <div className="titles-wrapper">
                 <h1>Movie Engine</h1>
                 <p>{this.state.subtitle}</p>
                 <ul className="nav nav-tabs">
                 {this.state.types.map(t =>
-                    <li className="nav-item">
-                        <a className={"nav-link " + (t.name == this.state.selectedTypeName ? "active":"")} key={t.titleTypeId} onClick={() => this.renderByType(t.name)}>{t.name}</a>
+                    <li className="nav-item" key={t.name}>
+                        <a className={"nav-link " + (t.name === this.state.selectedTypeName ? "active" : "")}
+                            onClick={() => this.renderByType(t.name)}>
+                            {t.name}
+                        </a>
                     </li>
                 )}
                 </ul>
