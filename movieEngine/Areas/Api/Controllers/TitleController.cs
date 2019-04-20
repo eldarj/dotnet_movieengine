@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using AutoMapper;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using movieEngine.Data;
@@ -15,7 +17,10 @@ namespace movieEngine.Web.Areas.Api.Controllers
     [Route("api/titles")]
     public class TitleController : MyBaseApiController
     {
-        public TitleController(MyDbContext ctx, IMapper mapper) : base(ctx, mapper) { }
+        public TitleController(MyDbContext ctx, IMapper mapper, IHostingEnvironment hostingEnvironment) : 
+            base(ctx, mapper, hostingEnvironment)
+        {
+        }
 
         // GET: api/titles?type=movie
         //  - With query param 'type' as: Optional, Caseinsensitive
@@ -62,6 +67,7 @@ namespace movieEngine.Web.Areas.Api.Controllers
             }
 
             var newTitle = mapper.Map<Title>(obj);
+
             db.Titles.Add(newTitle);
             db.SaveChanges();
 
