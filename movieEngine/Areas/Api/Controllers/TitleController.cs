@@ -25,10 +25,12 @@ namespace movieEngine.Web.Areas.Api.Controllers
             var titles = String.IsNullOrEmpty(type) ?
                 db.Titles
                     .Include(t => t.Type)
+                    .OrderByDescending(t => t.Rating)
                     .ToList() :
                 db.Titles
                     .Include(t => t.Type)
                     .Where(t => t.Type.Name == type)
+                    .OrderByDescending(t => t.Rating)
                     .ToList();
 
             return Ok(mapper.Map<List<TitleResponse>>(titles));
