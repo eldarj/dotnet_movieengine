@@ -8,13 +8,12 @@ export class IndexView extends Component {
     apiHeaders = new Headers({ 'Authorization': 'Basic ' + btoa('eja:eja') });
     subtitleMap = { 'Movie': 'Top rated Movies', 'TV Show': 'Top rated TV Shows' };
 
+    // we'll hold onto these vars so we can perform different filters on type-change, search-query-change etc.
     titles = [];
-
-    inputFieldQuery = '';
+    inputFieldQuery = ''; 
 
     constructor(props) {
         super(props);
-
         this.state = { items: [], types: [], subtitle: '', selectedTypeName: false, loadingData: true };
 
         fetch('api/types', {
@@ -22,9 +21,7 @@ export class IndexView extends Component {
         })
         .then(response => response.json())
         .then(data => {
-            this.setState({
-                types: data
-            });
+            this.setState({ types: data }); // we'll also fetch types (movie, tv show...), so we create dynamic tabs for filtering
         });
 
         fetch('api/titles', {
@@ -42,7 +39,8 @@ export class IndexView extends Component {
         });
     }
 
-    //"5 stars", "at least 3 stars", "after 2015", "older than 5 years"
+    //Uses patterns as: "5 stars", "at least 3 stars", "after 2015", "older than 5 years"
+    // -- to determine if we have a phrased query, if so filter the items using those patterns and regex
     filterByRegexHelper = {
         phrases:
         {
@@ -80,6 +78,7 @@ export class IndexView extends Component {
         }
     }
 
+    // Filters the list of titles (movies, tv shows) by using regex pattern phrases or by just checking item's text attributes
     getFilteredTitles(typeName, query = '') {
         let filteredItems = this.titles.filter(itm => itm.type === typeName);
 
@@ -87,6 +86,8 @@ export class IndexView extends Component {
             return filteredItems;
         }
 
+        // check if we have a positive regex patter eg. "5 stars" and if so get the filtered items, 
+        // or else: just check each item's name and desc. against the query
         let filteredItemsByRegex = this.filterByRegexHelper.filterByRegex(query, filteredItems);
         if (typeof filteredItemsByRegex !== 'undefined') {
             filteredItems = filteredItemsByRegex;
@@ -101,6 +102,8 @@ export class IndexView extends Component {
         return filteredItems;
     }
 
+
+    // Search-input on change event listener, handles the query string and uses getFilteredTitles for query/regex filtering
     handleSearchOnChange(e) {
         this.inputFieldQuery = e.target.value;
 
@@ -116,6 +119,7 @@ export class IndexView extends Component {
         this.setState({ items: this.getFilteredTitles(this.state.selectedTypeName, this.inputFieldQuery) }); 
     }
 
+    // Handles tab clicks ie. filters the list for the specific tab and sets additional vars depending on that eg. subtitle
     handleFilterByType(typeName = this.defaultFilterType) {
         let _sub = typeof this.subtitleMap[typeName] === 'undefined' ? typeName :
             this.subtitleMap[typeName];
@@ -148,7 +152,7 @@ export class IndexView extends Component {
                                 <div className="small">{itm.description}</div>
                             </td>
                             <td><small>{itm.released}</small></td>
-                            <td><small>{itm.rating}</small></td>
+                            <td>{itm.rating}</td>
                             <td><small>{itm.type}</small></td>
                         </tr>
                     )}
