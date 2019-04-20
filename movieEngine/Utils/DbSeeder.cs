@@ -45,19 +45,23 @@ public class DbSeeder
                             Description = "\"Black Panther\" follows T'Challa who, after the events of \"Captain America: Civil War, " +
                             "returns home to the isolated, technologically advanced African nation of Wakanda to take his place as King. " +
                             "However, when an old enemy reappears on the radar, T'Challa's mettle as King and Black Panther is tested " +
-                            "when he is drawn into a conflict that puts the entire fate of Wakanda and the world at risk." 
+                            "when he is drawn into a conflict that puts the entire fate of Wakanda and the world at risk.",
+                            Rating = 5
                 },
                 new Title { Name = "Mission: Impossible - Fallout", Released = new DateTime(2018, 7, 26), Type = mov,
                             Description = "Fast, sleek, and fun, Mission: Impossible - Fallout lives up to the \"impossible\" part of its " +
-                            "name by setting yet another high mark for insane set pieces in a franchise full of them."
+                            "name by setting yet another high mark for insane set pieces in a franchise full of them.",
+                            Rating = 4.5
                 },
                 new Title { Name = "Blackkklansman", Released = new DateTime(2018, 8, 10), Type = mov,
                             Description = "BlacKkKlansman uses history to offer bitingly trenchant commentary on current events -- and " +
-                            "brings out some of Spike Lee's hardest-hitting work in decades along the way."
+                            "brings out some of Spike Lee's hardest-hitting work in decades along the way.",
+                            Rating = 4
                 },
                 new Title { Name = "Spider-man: Into the Spider-verse", Released = new DateTime(2018, 4, 20), Type = mov,
                             Description = "Spider-Man: Into the Spider-Verse matches bold storytelling with striking animation for a " +
-                            "purely enjoyable adventure with heart, humor, and plenty of superhero action."
+                            "purely enjoyable adventure with heart, humor, and plenty of superhero action.",
+                            Rating = 3
                 },
                 new Title { Name = "Roma", Released = new DateTime(2017, 9, 22), Type = mov,
                             Description = "Roma finds writer-director Alfonso Cuarón in complete, enthralling command of his visual craft " +
@@ -126,21 +130,26 @@ public class DbSeeder
                             "intimacy with these outcasts."
                 },
                 new Title { Name = "Chilling adventures of Sabrina", Released = new DateTime(2018, 2, 9), Type = show,
-                            Description = "With a stronger central mystery steeped in witchy world building."
+                            Description = "With a stronger central mystery steeped in witchy world building.",
+                            Rating = 5
                 },
                 new Title { Name = "American gods", Released = new DateTime(2018, 9, 9), Type = show,
-                            Description = "American Gods retains its bombastic style but loses its divine inspiration in a derivative second season."
+                            Description = "American Gods retains its bombastic style but loses its divine inspiration in a derivative second season.",
+                            Rating = 4.5
                 },
                 new Title { Name = "The twilight zone", Released = new DateTime(2018, 11, 11), Type = show,
-                            Description = "The Twilight Zone explores the strangeness of the modern world through Rod Serling's winning formula."
+                            Description = "The Twilight Zone explores the strangeness of the modern world through Rod Serling's winning formula.",
+                            Rating = 3
                 },
                 new Title { Name = "Hanna", Released = new DateTime(2017, 11, 16), Type = show,
                             Description = "A gritty reimagining of the 2011 film, Hanna adds new wrinkles to the mythology and texture to the " +
                             "titular assassin -- though the series' long-winded journey may try the patience of viewers who want their violent " +
-                            "fables concise."
+                            "fables concise.",
+                            Rating = 2.5
                 },
                 new Title { Name = "Two and a half men", Released = new DateTime(2011, 2, 10), Type = show,
-                            Description = "Really good comedy!"
+                            Description = "Really good comedy!",
+                            Rating = 2
                 },
             };
             db.Titles.AddRange(titlesSeedList);
